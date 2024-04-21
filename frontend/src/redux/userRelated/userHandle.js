@@ -92,6 +92,24 @@ export const deleteUser = (id, address) => async (dispatch) => {
 //     dispatch(getFailed("Sorry the delete function has been disabled for now."));
 // }
 
+// export const updateUser = (fields, id, address) => async (dispatch) => {
+//     dispatch(getRequest());
+
+//     try {
+//         const result = await axios.put(`${process.env.REACT_APP_BASE_URL}/${address}/${id}`, fields, {
+//             headers: { 'Content-Type': 'application/json' },
+//         });
+//         if (result.data.schoolName) {
+//             dispatch(authSuccess(result.data));
+//         }
+//         else {
+//             dispatch(doneSuccess(result.data));
+//         }
+//     } catch (error) {
+//         dispatch(getError(error));
+//     }
+// }
+
 export const updateUser = (fields, id, address) => async (dispatch) => {
     dispatch(getRequest());
 
@@ -106,9 +124,11 @@ export const updateUser = (fields, id, address) => async (dispatch) => {
             dispatch(doneSuccess(result.data));
         }
     } catch (error) {
-        dispatch(getError(error));
+        console.error("Error updating user:", error);
+        dispatch(getError(error.message)); // Assuming you have a getMessage() method to extract error messages
     }
 }
+
 
 export const addStuff = (fields, address) => async (dispatch) => {
     dispatch(authRequest());
