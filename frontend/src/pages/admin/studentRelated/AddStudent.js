@@ -21,12 +21,12 @@ const AddStudent = ({ situation }) => {
     const [password, setPassword] = useState('')
     const [className, setClassName] = useState('')
     const [sclassName, setSclassName] = useState('')
-    const [dob, setDob] = useState(''); // Added
-    const [gender, setGender] = useState(''); // Added
-    const [email, setEmail] = useState(''); // Added
-    const [phone, setPhone] = useState(''); // Added
-    const [address, setAddress] = useState(''); // Added
-    const [emergencyContact, setEmergencyContact] = useState(''); // Added
+    const [dob, setDob] = useState('');
+    const [gender, setGender] = useState('');
+    const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
+    const [address, setAddress] = useState('');
+    const [emergencyContact, setEmergencyContact] = useState('');
 
     const adminID = currentUser._id
     const role = "Student"
@@ -107,7 +107,7 @@ const AddStudent = ({ situation }) => {
     return (
         <>
             <div className="register">
-                <form className="registerForm" onSubmit={submitHandler}>
+                <form className="registerForm" onSubmit={submitHandler} style={{ marginTop: '150px' }}> {/* Add top margin here */}
                     <span className="registerTitle">Add Student</span>
                     <label>Name</label>
                     <input className="registerInput" type="text" placeholder="Enter student's name..."
@@ -145,7 +145,6 @@ const AddStudent = ({ situation }) => {
                         onChange={(event) => setPassword(event.target.value)}
                         autoComplete="new-password" required />
 
-                    {/* New fields */}
                     <label>Date of Birth</label>
                     <input className="registerInput" type="date" placeholder="Enter student's Date of Birth..."
                         value={dob}
@@ -183,7 +182,6 @@ const AddStudent = ({ situation }) => {
                         value={emergencyContact}
                         onChange={(event) => setEmergencyContact(event.target.value)}
                         required />
-                    {/* End of new fields */}
 
                     <button className="registerButton" type="submit" disabled={loader}>
                         {loader ? (

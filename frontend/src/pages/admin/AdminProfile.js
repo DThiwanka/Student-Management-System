@@ -1,63 +1,65 @@
-// import React, { useState } from 'react';
-// import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material'
-// import { useDispatch, useSelector } from 'react-redux';
-// import { deleteUser, updateUser } from '../../redux/userRelated/userHandle';
-// import { useNavigate } from 'react-router-dom'
-// import { authLogout } from '../../redux/userRelated/userSlice';
-// import { Button, Collapse } from '@mui/material';
+import React, { useState } from 'react';
+import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material'
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteUser, updateUser } from '../../redux/userRelated/userHandle';
+import { useNavigate } from 'react-router-dom'
+import { authLogout } from '../../redux/userRelated/userSlice';
+import { Button, Collapse } from '@mui/material';
 
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 
 const AdminProfile = () => {
-    // const [showTab, setShowTab] = useState(false);
-    // const buttonText = showTab ? 'Cancel' : 'Edit profile';
+    const [showTab, setShowTab] = useState(false);
+    const buttonText = showTab ? 'Cancel' : 'Edit profile';
 
-    // const navigate = useNavigate()
-    // const dispatch = useDispatch();
-        const { currentUser } = useSelector((state) => state.user);
-    // const { currentUser, response, error } = useSelector((state) => state.user);
-    // const address = "Admin"
+    const navigate = useNavigate()
+    const dispatch = useDispatch();
+        // const { currentUser } = useSelector((state) => state.user);
+    const { currentUser, response, error } = useSelector((state) => state.user);
+    const address = "Admin"
 
-    // if (response) { console.log(response) }
-    // else if (error) { console.log(error) }
+    if (response) { console.log(response) }
+    else if (error) { console.log(error) }
 
-    // const [name, setName] = useState(currentUser.name);
-    // const [email, setEmail] = useState(currentUser.email);
-    // const [password, setPassword] = useState("");
-    // const [schoolName, setSchoolName] = useState(currentUser.schoolName);
+    const [name, setName] = useState(currentUser.name);
+    const [email, setEmail] = useState(currentUser.email);
+    const [password, setPassword] = useState("");
+    const [schoolName, setSchoolName] = useState(currentUser.schoolName);
 
-    // const fields = password === "" ? { name, email, schoolName } : { name, email, password, schoolName }
+    const fields = password === "" ? { name, email, schoolName } : { name, email, password, schoolName }
 
-    // const submitHandler = (event) => {
-    //     event.preventDefault()
-    //     dispatch(updateUser(fields, currentUser._id, address))
-    // }
+    const submitHandler = (event) => {
+        event.preventDefault()
+        dispatch(updateUser(fields, currentUser._id, address))
+    }
 
-    // const deleteHandler = () => {
-    //     try {
-    //         dispatch(deleteUser(currentUser._id, "Students"));
-    //         dispatch(deleteUser(currentUser._id, address));
-    //         dispatch(authLogout());
-    //         navigate('/');
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    // }
+    const deleteHandler = () => {
+        try {
+            dispatch(deleteUser(currentUser._id, "Students"));
+            dispatch(deleteUser(currentUser._id, address));
+            dispatch(authLogout());
+            navigate('/');
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     return (
-        <div>
-            Name: {currentUser.name}
+        <div >
+            <div style={styles.container}>
+             <strong>Name:</strong> {currentUser.name}
             <br />
-            Email: {currentUser.email}
+             <strong>E mail:</strong> {currentUser.email}
             <br />
-            School: {currentUser.schoolName}
+                <strong>School:</strong>: {currentUser.schoolName}
             <br />
-            {/* <Button variant="contained" color="error" onClick={deleteHandler}>Delete</Button> */}
-            {/* <Button variant="contained" sx={styles.showButton}
+            </div>
+            <Button variant="contained" color="error" style={styles.button} onClick={deleteHandler}>Delete</Button>
+            <Button variant="contained" style={styles.button} sx={styles.showButton}
                 onClick={() => setShowTab(!showTab)}>
                 {showTab ? <KeyboardArrowUp /> : <KeyboardArrowDown />}{buttonText}
             </Button>
-            <Collapse in={showTab} timeout="auto" unmountOnExit>
+            <Collapse style={styles.details} in={showTab} timeout="auto" unmountOnExit>
                 <div className="register">
                     <form className="registerForm" onSubmit={submitHandler}>
                         <span className="registerTitle">Edit Details</span>
@@ -88,7 +90,7 @@ const AdminProfile = () => {
                         <button className="registerButton" type="submit" >Update</button>
                     </form>
                 </div>
-            </Collapse> */}
+            </Collapse>
         </div>
     )
 }
@@ -103,3 +105,20 @@ export default AdminProfile
 //         }
 //     }
 // }
+
+const styles = {
+    container: {
+        border: '1px solid #ccc',
+        borderRadius: '5px',
+        padding: '20px',
+        marginBottom: '20px',
+        maxWidth: '400px',
+    },
+    button: {
+        marginTop: '10px',
+        marginRight: '10px',
+    },
+    details: {
+        marginTop: '10px',
+    },
+};
