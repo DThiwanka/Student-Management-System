@@ -277,6 +277,51 @@ const removeStudentAttendance = async (req, res) => {
     }
 };
 
+//Payment Check
+const studentPayment = async (req, res) => {
+    const { subName, status, date, amount, month } = req.body;
+
+    try {
+        const student = await Student.findById(req.params.id);
+
+        if (!student) {
+            return res.send({ message: 'Student not found' });
+        }
+
+        const subject = await Subject.findById(subName);
+
+        // Check if the subject exists
+        if (!subject) {
+            return res.send({ message: 'Subject not found' });
+        }
+
+        // Check if the subject is associated with the student's class
+        if (subject.sclassName.toString() !== student.sclassName.toString()) {
+            return res.send({ message: 'Subject not available for this student' });
+        }
+
+        // Check if the payment already exists for the given month
+        const existingPayment = student.payment.find(
+            (p) =>
+                p.date === date &&
+                p.subName.toString() === subName &&
+                p.month === month
+        );
+
+        if (existingPayment) {
+            return res.send({ message: 'Payment already recorded for this month' });
+        }
+
+        // Add the payment details
+        student.payment.push({ date, status, subName, amount, month });
+
+        const result = await student.save();
+        return res.send(result);
+    } catch (error) {
+        res.status(500).json(error);
+    }
+};
+
 
 module.exports = {
     studentRegister,
@@ -294,4 +339,6 @@ module.exports = {
     clearAllStudentsAttendance,
     removeStudentAttendanceBySubject,
     removeStudentAttendance,
+
+    studentPayment
 };

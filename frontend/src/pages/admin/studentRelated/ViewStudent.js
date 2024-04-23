@@ -28,6 +28,8 @@ const ViewStudent = () => {
     const dispatch = useDispatch()
     const { userDetails, response, loading, error } = useSelector((state) => state.user);
 
+    //const { subjectsList } = useSelector((state) => state.sclass);//newly added
+
     const studentID = params.id
     const address = "Student"
 
@@ -51,6 +53,9 @@ const ViewStudent = () => {
     const [studentSchool, setStudentSchool] = useState('');
     const [subjectMarks, setSubjectMarks] = useState('');
     const [subjectAttendance, setSubjectAttendance] = useState([]);
+    const [payment, setPayment] = useState([]);
+
+
 
     const [openStates, setOpenStates] = useState({});
 
@@ -87,6 +92,7 @@ const ViewStudent = () => {
             setStudentSchool(userDetails.school || '');
             setSubjectMarks(userDetails.examResult || '');
             setSubjectAttendance(userDetails.attendance || []);
+            setPayment(userDetails.payment || []); // Update here
         }
     }, [userDetails]);
 
@@ -236,6 +242,7 @@ const ViewStudent = () => {
                 </>
             )
         }
+        
         return (
             <>
                 {subjectAttendance && Array.isArray(subjectAttendance) && subjectAttendance.length > 0
@@ -339,6 +346,105 @@ const ViewStudent = () => {
         )
     }
 
+    const StudentPaymentSection = () => {
+        //console.log(subjectPayment);
+        const renderTableSection = () => {
+
+            return (
+                <>
+                    <h3>Payments:</h3>
+                    <Table>
+                        <TableHead>
+                            <StyledTableRow>
+                                <StyledTableCell>Transaction ID</StyledTableCell>
+                                <StyledTableCell>Subject ID</StyledTableCell>
+                                <StyledTableCell>Month</StyledTableCell>
+                                <StyledTableCell>Date</StyledTableCell>
+                                <StyledTableCell>Payment Status</StyledTableCell>
+                                <StyledTableCell>Amount</StyledTableCell>
+
+                            </StyledTableRow>
+                        </TableHead>
+                        <TableBody>
+
+                            {payment.map((result, index) => {
+                                // if (!result.subName || !result.marksObtained) {
+                                //     return null;
+                                // }
+                                console.log(result)
+                                return (
+                                    <StyledTableRow key={index}>
+                                        <StyledTableCell>{result._id}</StyledTableCell>
+                                        <StyledTableCell>{result.subName}</StyledTableCell>
+                                        <StyledTableCell>{result.month}</StyledTableCell>
+                                        <StyledTableCell>{result.date}</StyledTableCell>
+                                        <StyledTableCell>{result.status}</StyledTableCell>
+                                        <StyledTableCell>{result.amount}</StyledTableCell>
+                                    </StyledTableRow>
+                                );
+                            })}
+
+                            {/* {payment.map((result, index) => {
+                                const subject = subjectsList.find(subject => subject._id === result.subjectID);
+                                const subjectName = subject ? subject.subName : 'Unknown'; // Default to 'Unknown' if subject not found
+                                return (
+                                    <StyledTableRow key={index}>
+                                        <StyledTableCell>{subjectName}</StyledTableCell>
+                                        <StyledTableCell>{result.month}</StyledTableCell>
+                                        <StyledTableCell>{result.date}</StyledTableCell>
+                                        <StyledTableCell>{result.status}</StyledTableCell>
+                                        <StyledTableCell>{result.amount}</StyledTableCell>
+                                    </StyledTableRow>
+                                );
+                            })} */}
+
+                        </TableBody>
+                    </Table>
+                    <Button variant="contained" sx={styles.styledButton} onClick={() => navigate("/Admin/students/student/marks/" + studentID)}>
+                        Add Payment
+                    </Button>
+                </>
+            )
+        }
+        const renderChartSection = () => {
+            return (
+                <>
+                    <CustomBarChart chartData={subjectMarks} dataKey="marksObtained" />
+                </>
+            )
+        }
+        return (
+            <>
+                {subjectMarks && Array.isArray(subjectMarks) && subjectMarks.length > 0
+                    ?
+                    <>
+                        {selectedSection === 'table' && renderTableSection()}
+                        {selectedSection === 'chart' && renderChartSection()}
+
+                        <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={4}>
+                            <BottomNavigation value={selectedSection} onChange={handleSectionChange} showLabels>
+                                <BottomNavigationAction
+                                    label="Table"
+                                    value="table"
+                                    icon={selectedSection === 'table' ? <TableChartIcon /> : <TableChartOutlinedIcon />}
+                                />
+                                <BottomNavigationAction
+                                    label="Chart"
+                                    value="chart"
+                                    icon={selectedSection === 'chart' ? <InsertChartIcon /> : <InsertChartOutlinedIcon />}
+                                />
+                            </BottomNavigation>
+                        </Paper>
+                    </>
+                    :
+                    <Button variant="contained" sx={styles.styledButton} onClick={() => navigate("/Admin/students/student/marks/" + studentID)}>
+                        Add Marks
+                    </Button>
+                }
+            </>
+        )
+    }
+
     const StudentDetailsSection = () => {
         return (
             <div>
@@ -358,7 +464,7 @@ const ViewStudent = () => {
                     Delete
                 </Button>
                 <br />
-                {/* <Button variant="contained" sx={styles.styledButton} className="show-tab" onClick={() => { setShowTab(!showTab) }}>
+                <Button variant="contained" sx={styles.styledButton} className="show-tab" onClick={() => { setShowTab(!showTab) }}>
                     {
                         showTab
                             ? <KeyboardArrowUp />
@@ -377,7 +483,7 @@ const ViewStudent = () => {
                                 autoComplete="name" required />
 
                             <label>Roll Number</label>
-                            <input className="registerInput" type="number" placeholder="Enter user's Roll Number..."
+                            <input className="registerInput" type="text" placeholder="Enter user's Roll Number..."
                                 value={rollNum}
                                 onChange={(event) => setRollNum(event.target.value)}
                                 required />
@@ -391,7 +497,7 @@ const ViewStudent = () => {
                             <button className="registerButton" type="submit" >Update</button>
                         </form>
                     </div>
-                </Collapse> */}
+                </Collapse>
             </div>
         )
     }
@@ -412,6 +518,7 @@ const ViewStudent = () => {
                                     <Tab label="Details" value="1" />
                                     <Tab label="Attendance" value="2" />
                                     <Tab label="Marks" value="3" />
+                                    <Tab label="Payment" value="4" />
                                 </TabList>
                             </Box>
                             <Container sx={{ marginTop: "3rem", marginBottom: "4rem" }}>
@@ -423,6 +530,9 @@ const ViewStudent = () => {
                                 </TabPanel>
                                 <TabPanel value="3">
                                     <StudentMarksSection />
+                                </TabPanel>
+                                <TabPanel value="4">
+                                    <StudentPaymentSection />
                                 </TabPanel>
                             </Container>
                         </TabContext>

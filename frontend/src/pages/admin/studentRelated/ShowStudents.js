@@ -72,7 +72,7 @@ const ShowStudents = () => {
     })
 
     const StudentButtonHaver = ({ row }) => {
-        const options = ['Take Attendance', 'Provide Marks'];
+        const options = ['Take Attendance', 'Provide Marks','Add Payments'];
 
         const [open, setOpen] = React.useState(false);
         const anchorRef = React.useRef(null);
@@ -85,14 +85,22 @@ const ShowStudents = () => {
             } else if (selectedIndex === 1) {
                 handleMarks();
             }
+            else if (selectedIndex === 2) {
+                handlePayments();
+            }
         };
 
         const handleAttendance = () => {
             navigate("/Admin/students/student/attendance/" + row.id)
         }
+
         const handleMarks = () => {
             navigate("/Admin/students/student/marks/" + row.id)
         };
+
+        const handlePayments = () => {
+            navigate("/Admin/students/student/payment/" + row.id)
+        }
 
         const handleMenuItemClick = (event, index) => {
             setSelectedIndex(index);
@@ -157,7 +165,7 @@ const ShowStudents = () => {
                                             {options.map((option, index) => (
                                                 <MenuItem
                                                     key={option}
-                                                    disabled={index === 2}
+                                                    disabled={index === 3}
                                                     selected={index === selectedIndex}
                                                     onClick={(event) => handleMenuItemClick(event, index)}
                                                 >

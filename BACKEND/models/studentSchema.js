@@ -39,6 +39,7 @@ const studentSchema = new mongoose.Schema({
             }
         }
     ],
+    
     attendance: [{
         date: {
             type: Date,
@@ -55,6 +56,34 @@ const studentSchema = new mongoose.Schema({
             required: true
         }
     }],
+
+
+    //Payment details
+    payment: [{
+        date: {
+            type: String,
+            required: true
+        },
+        status: {
+            type: String,
+            enum: ['Paid', 'Not Paid'],
+            required: true
+        },
+        subName: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'subject',
+            required: true
+        },
+        amount: {
+            type: Number,
+            required: true
+        },
+        month: {
+            type: String,
+            required: true
+        },
+    }],
+
     // New personal information fields
     dob: {
         type: Date,
