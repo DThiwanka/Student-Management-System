@@ -27,6 +27,10 @@ const PaymentStatus = ({ situation }) => {
     const [status, setStatus] = useState('');
     const [date, setDate] = useState('');
 
+
+    const [amount, setAmount] = useState(0);
+    const [month, setMonth] = useState('');
+
     const [showPopup, setShowPopup] = useState(false);
     const [message, setMessage] = useState("");
     const [loader, setLoader] = useState(false)
@@ -59,7 +63,9 @@ const PaymentStatus = ({ situation }) => {
         setChosenSubName(selectedSubject._id);
     }
 
-    const fields = { subName: chosenSubName, status, date }
+    // const fields = { subName: chosenSubName, status, date }
+    const fields = { subName: chosenSubName, status, date, amount, month };
+
 
     const submitHandler = (event) => {
         event.preventDefault()
@@ -121,7 +127,7 @@ const PaymentStatus = ({ situation }) => {
                                     </Typography>
                                 }
                             </Stack>
-                            
+
                             <form onSubmit={submitHandler}>
                                 <Stack spacing={3}>
                                     {
@@ -159,8 +165,8 @@ const PaymentStatus = ({ situation }) => {
                                             onChange={(event) => setStatus(event.target.value)}
                                             required
                                         >
-                                            <MenuItem value="Present">Present</MenuItem>
-                                            <MenuItem value="Absent">Absent</MenuItem>
+                                            <MenuItem value="Paid">Paid</MenuItem>
+                                            <MenuItem value="Not Paid">Not Paid</MenuItem>
                                         </Select>
                                     </FormControl>
                                     <FormControl>
@@ -174,23 +180,48 @@ const PaymentStatus = ({ situation }) => {
                                             }}
                                         />
                                     </FormControl>
-                                </Stack>
 
-                                <PurpleButton
-                                    fullWidth
-                                    size="large"
-                                    sx={{ mt: 3 }}
-                                    variant="contained"
-                                    type="submit"
-                                    disabled={loader}
-                                >
-                                    {loader ? <CircularProgress size={24} color="inherit" /> : "Submit"}
-                                </PurpleButton>
-                            </form>
-                        </Box>
+                                <FormControl>
+                                    <TextField
+                                        label="Select Amount"
+                                        type="number" // Change the type to "number"
+                                        value={amount}
+                                        onChange={(event) => setAmount(parseInt(event.target.value, 10))} // Parse string to number
+                                        required
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                    />
+                                </FormControl>
+
+                                <FormControl>
+                                    <TextField
+                                        label="Select month"
+                                        type="text"
+                                        value={month}
+                                        onChange={(event) => setMonth(event.target.value)} required
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                    />
+                                </FormControl>
+                            </Stack>
+
+                            <PurpleButton
+                                fullWidth
+                                size="large"
+                                sx={{ mt: 3 }}
+                                variant="contained"
+                                type="submit"
+                                disabled={loader}
+                            >
+                                {loader ? <CircularProgress size={24} color="inherit" /> : "Submit"}
+                            </PurpleButton>
+                        </form>
                     </Box>
-                    <Popup message={message} setShowPopup={setShowPopup} showPopup={showPopup} />
-                </>
+                </Box>
+            <Popup message={message} setShowPopup={setShowPopup} showPopup={showPopup} />
+        </>
             }
         </>
     )

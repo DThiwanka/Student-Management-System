@@ -51,7 +51,7 @@ router.put("/Student/:id", updateStudent)
 router.put('/UpdateExamResult/:id', updateExamResult)
 
 router.put('/StudentAttendance/:id', studentAttendance)
-router.put('/StudentPayment/:id', studentPayment)
+router.put('/PaymentStatus/:id', studentPayment)
 
 router.put('/RemoveAllStudentsSubAtten/:id', clearAllStudentsAttendanceBySubject);
 router.put('/RemoveAllStudentsAtten/:id', clearAllStudentsAttendance);
