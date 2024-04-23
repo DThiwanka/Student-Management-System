@@ -61,16 +61,18 @@ const PaymentStatus = ({ situation }) => {
         );
         setSubjectName(selectedSubject.subName);
         setChosenSubName(selectedSubject._id);
+        console.log("changeHandler",selectedSubject);
     }
 
     // const fields = { subName: chosenSubName, status, date }
-    const fields = { subName: chosenSubName, status, date, amount, month };
+    const fields = { subName: chosenSubName, subNameToString: subjectName , status, date, amount, month };
 
 
     const submitHandler = (event) => {
         event.preventDefault()
         setLoader(true)
         dispatch(updateStudentFields(studentID, fields, "PaymentStatus"))
+        console.log("submitHandler",fields);
     }
 
     useEffect(() => {
@@ -181,43 +183,43 @@ const PaymentStatus = ({ situation }) => {
                                         />
                                     </FormControl>
 
-                                <FormControl>
-                                    <TextField
-                                        label="Select Amount"
-                                        type="number" // Change the type to "number"
-                                        value={amount}
-                                        onChange={(event) => setAmount(parseInt(event.target.value, 10))} // Parse string to number
-                                        required
-                                        InputLabelProps={{
-                                            shrink: true,
-                                        }}
-                                    />
-                                </FormControl>
+                                    <FormControl>
+                                        <TextField
+                                            label="Select Amount"
+                                            type="number" // Change the type to "number"
+                                            value={amount}
+                                            onChange={(event) => setAmount(parseInt(event.target.value, 10))} // Parse string to number
+                                            required
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                        />
+                                    </FormControl>
 
-                                <FormControl>
-                                    <TextField
-                                        label="Select month"
-                                        type="text"
-                                        value={month}
-                                        onChange={(event) => setMonth(event.target.value)} required
-                                        InputLabelProps={{
-                                            shrink: true,
-                                        }}
-                                    />
-                                </FormControl>
-                            </Stack>
+                                    <FormControl>
+                                        <TextField
+                                            label="Select month"
+                                            type="text"
+                                            value={month}
+                                            onChange={(event) => setMonth(event.target.value)} required
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                        />
+                                    </FormControl>
+                                </Stack>
 
-                            <PurpleButton
-                                fullWidth
-                                size="large"
-                                sx={{ mt: 3 }}
-                                variant="contained"
-                                type="submit"
-                                disabled={loader}
-                            >
-                                {loader ? <CircularProgress size={24} color="inherit" /> : "Submit"}
-                            </PurpleButton>
-                        </form>
+                                <PurpleButton
+                                    fullWidth
+                                    size="large"
+                                    sx={{ mt: 3 }}
+                                    variant="contained"
+                                    type="submit"
+                                    disabled={loader}
+                                >
+                                    {loader ? <CircularProgress size={24} color="inherit" /> : "Submit"}
+                                </PurpleButton>
+                            </form>
                     </Box>
                 </Box>
             <Popup message={message} setShowPopup={setShowPopup} showPopup={showPopup} />
