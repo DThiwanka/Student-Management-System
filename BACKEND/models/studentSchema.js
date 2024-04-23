@@ -39,7 +39,6 @@ const studentSchema = new mongoose.Schema({
             }
         }
     ],
-    
     attendance: [{
         date: {
             type: Date,
@@ -72,6 +71,10 @@ const studentSchema = new mongoose.Schema({
         subName: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'subject',
+            required: true
+        },
+        subNameToString: {
+            type: String, // Adding a field to store the subject name
             required: true
         },
         amount: {

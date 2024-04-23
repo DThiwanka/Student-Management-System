@@ -347,9 +347,8 @@ const ViewStudent = () => {
     }
 
     const StudentPaymentSection = () => {
-        //console.log(subjectPayment);
+        
         const renderTableSection = () => {
-
             return (
                 <>
                     <h3>Payments:</h3>
@@ -357,7 +356,7 @@ const ViewStudent = () => {
                         <TableHead>
                             <StyledTableRow>
                                 <StyledTableCell>Transaction ID</StyledTableCell>
-                                <StyledTableCell>Subject ID</StyledTableCell>
+                                <StyledTableCell>Subject</StyledTableCell>
                                 <StyledTableCell>Month</StyledTableCell>
                                 <StyledTableCell>Date</StyledTableCell>
                                 <StyledTableCell>Payment Status</StyledTableCell>
@@ -375,7 +374,7 @@ const ViewStudent = () => {
                                 return (
                                     <StyledTableRow key={index}>
                                         <StyledTableCell>{result._id}</StyledTableCell>
-                                        <StyledTableCell>{result.subName}</StyledTableCell>
+                                        <StyledTableCell>{result.subNameToString}</StyledTableCell>
                                         <StyledTableCell>{result.month}</StyledTableCell>
                                         <StyledTableCell>{result.date}</StyledTableCell>
                                         <StyledTableCell>{result.status}</StyledTableCell>
@@ -383,24 +382,10 @@ const ViewStudent = () => {
                                     </StyledTableRow>
                                 );
                             })}
-
-                            {/* {payment.map((result, index) => {
-                                const subject = subjectsList.find(subject => subject._id === result.subjectID);
-                                const subjectName = subject ? subject.subName : 'Unknown'; // Default to 'Unknown' if subject not found
-                                return (
-                                    <StyledTableRow key={index}>
-                                        <StyledTableCell>{subjectName}</StyledTableCell>
-                                        <StyledTableCell>{result.month}</StyledTableCell>
-                                        <StyledTableCell>{result.date}</StyledTableCell>
-                                        <StyledTableCell>{result.status}</StyledTableCell>
-                                        <StyledTableCell>{result.amount}</StyledTableCell>
-                                    </StyledTableRow>
-                                );
-                            })} */}
-
+                            
                         </TableBody>
                     </Table>
-                    <Button variant="contained" sx={styles.styledButton} onClick={() => navigate("/Admin/students/student/marks/" + studentID)}>
+                    <Button variant="contained" sx={styles.styledButton} onClick={() => navigate("/Admin/students/student/payment/" + studentID)}>
                         Add Payment
                     </Button>
                 </>
@@ -409,13 +394,13 @@ const ViewStudent = () => {
         const renderChartSection = () => {
             return (
                 <>
-                    <CustomBarChart chartData={subjectMarks} dataKey="marksObtained" />
+                    <CustomBarChart chartData={payment} dataKey="marksObtained" />
                 </>
             )
         }
         return (
             <>
-                {subjectMarks && Array.isArray(subjectMarks) && subjectMarks.length > 0
+                {payment && Array.isArray(payment) && payment.length > 0
                     ?
                     <>
                         {selectedSection === 'table' && renderTableSection()}
@@ -437,8 +422,8 @@ const ViewStudent = () => {
                         </Paper>
                     </>
                     :
-                    <Button variant="contained" sx={styles.styledButton} onClick={() => navigate("/Admin/students/student/marks/" + studentID)}>
-                        Add Marks
+                    <Button variant="contained" sx={styles.styledButton} onClick={() => navigate("/Admin/students/student/payment/" + studentID)}>
+                        Add Payment
                     </Button>
                 }
             </>

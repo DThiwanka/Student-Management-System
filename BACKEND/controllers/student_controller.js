@@ -279,7 +279,7 @@ const removeStudentAttendance = async (req, res) => {
 
 //Payment Check
 const studentPayment = async (req, res) => {
-    const { subName, status, date, amount, month } = req.body;
+    const { subName, subNameToString, status, date, amount, month } = req.body;
 
     try {
         const student = await Student.findById(req.params.id);
@@ -313,7 +313,7 @@ const studentPayment = async (req, res) => {
         }
 
         // Add the payment details
-        student.payment.push({ date, status, subName, amount, month });
+        student.payment.push({ date, status, subName, subNameToString, amount, month  });
 
         const result = await student.save();
         return res.send(result);
