@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const Teacher = require('../models/teacherSchema.js');
 const Subject = require('../models/subjectSchema.js');
+const Student = require('../models/studentSchema.js')
 
 const teacherRegister = async (req, res) => {
     const { name, email, password, role, school, teachSubject, teachSclass } = req.body;
@@ -34,6 +35,7 @@ const teacherLogIn = async (req, res) => {
             if (validated) {
                 teacher = await teacher.populate("teachSubject", "subName sessions")
                 teacher = await teacher.populate("school", "schoolName")
+                teacher = await teacher.populate("teachSclass", "sclassName")
                 teacher = await teacher.populate("teachSclass", "sclassName")
                 teacher.password = undefined;
                 res.send(teacher);
@@ -192,6 +194,64 @@ const teacherAttendance = async (req, res) => {
     }
 };
 
+//working one
+const gettecherpayment = async (req, res) => {
+    try {
+        const teacherId = req.params.id;
+        const subjectId = req.params.subjectId; // Assuming subjectId is passed in the request parameters
+
+        // Find the teacher by ID
+        const teacher = await Teacher.findById(teacherId);
+
+        if (!teacher) {
+            return res.status(404).send({ message: 'Teacher not found' });
+        }
+
+        // Check if the teacher teaches the specified subject
+        const subjectTaughtByTeacher = await Subject.findOne({ _id: subjectId, teacher: teacherId });
+
+        if (!subjectTaughtByTeacher) {
+            return res.status(404).send({ message: 'Teacher does not teach this subject' });
+        }
+
+        // Find students who belong to the teacher's class and have payments for the specified subject
+        const students = await Student.find({
+            sclassName: teacher.teachSclass,
+            payment: { $elemMatch: { subName: subjectId } }
+        }).populate({
+            path: 'payment',
+            match: { subName: subjectId },
+            select: 'date status amount month -_id' // Select only the specified fields
+        });
+
+        // Extract only the specified fields from the populated payment array
+        const formattedStudents = students.map(student => ({
+            name: student.name,
+            sclassName: student.sclassName,
+            payment: student.payment.map(payment => ({
+                date: payment.date,
+                status: payment.status,
+                amount: payment.amount,
+                month: payment.month
+            }))
+        }));
+
+        // Calculate the sum of amounts for each student
+        formattedStudents.forEach(student => {
+            student.totalAmount = student.payment.reduce((total, payment) => total + payment.amount, 0);
+        });
+
+        // Calculate the total sum of amounts for all students
+        const totalSum = formattedStudents.reduce((total, student) => total + student.totalAmount, 0);
+
+        res.send({ formattedStudents, totalSum });
+    } catch (error) {
+        res.status(500).json(error);
+    }
+};
+
+//
+
 module.exports = {
     teacherRegister,
     teacherLogIn,
@@ -201,5 +261,6 @@ module.exports = {
     deleteTeacher,
     deleteTeachers,
     deleteTeachersByClass,
-    teacherAttendance
+    teacherAttendance,
+    gettecherpayment
 };
