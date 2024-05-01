@@ -10,7 +10,6 @@ const TeacherPaymentPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [sortBy, setSortBy] = useState('name');
   const [sortOrder, setSortOrder] = useState('asc');
   const [currentPage, setCurrentPage] = useState(1);
   const [studentsPerPage] = useState(5);
@@ -36,12 +35,7 @@ const TeacherPaymentPage = () => {
   );
 
   const sortedStudents = filteredStudents?.slice().sort((a, b) => {
-    if (sortBy === 'name') {
-      return sortOrder === 'asc' ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
-    } else if (sortBy === 'totalAmount') {
-      return sortOrder === 'asc' ? a.totalAmount - b.totalAmount : b.totalAmount - a.totalAmount;
-    }
-    return 0;
+    return sortOrder === 'asc' ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
   });
 
   const indexOfLastStudent = currentPage * studentsPerPage;
@@ -77,9 +71,6 @@ const TeacherPaymentPage = () => {
         </div>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Typography variant="body1" style={{ marginRight: '10px' }}>Sort by:</Typography>
-          <div style={{ marginRight: '10px' }}>
-            <Typography variant="body1">{sortBy}</Typography>
-          </div>
           <div>
             <IconButton onClick={handleSort} size="small">
               {sortOrder === 'asc' ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
@@ -116,7 +107,6 @@ const TeacherPaymentPage = () => {
                     <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
                       <Typography variant="subtitle1" style={{ flex: 1 }}>Student Name: {student.name}</Typography>
                       <Typography variant="body1" style={{ marginRight: '20px' }}>Total Amount: {student.totalAmount}</Typography>
-                      {/* Add additional details here if needed */}
                     </div>
                   </AccordionSummary>
                   <AccordionDetails>
