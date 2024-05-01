@@ -4,16 +4,14 @@ import { getSubjectList } from '../../redux/sclassRelated/sclassHandle';
 import { getUserDetails } from '../../redux/userRelated/userHandle';
 import { BottomNavigation, BottomNavigationAction, Container, Paper, Table, TableBody, TableHead, Typography } from '@mui/material';
 import InsertChartIcon from '@mui/icons-material/InsertChart';
-import InsertChartOutlinedIcon from '@mui/icons-material/InsertChartOutlined';
 import TableChartIcon from '@mui/icons-material/TableChart';
-import TableChartOutlinedIcon from '@mui/icons-material/TableChartOutlined';
 import { StyledTableCell, StyledTableRow } from '../../components/styles';
 import CustomBarChart from '../../components/CustomBarChart';
 
 const StudentSubjects = () => {
     const dispatch = useDispatch();
     const { subjectsList, sclassDetails } = useSelector((state) => state.sclass);
-    const { userDetails, currentUser, loading, error } = useSelector((state) => state.user);
+    const { userDetails, currentUser, loading } = useSelector((state) => state.user);
 
     useEffect(() => {
         dispatch(getUserDetails(currentUser._id, "Student"));
