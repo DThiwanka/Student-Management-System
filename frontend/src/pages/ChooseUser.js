@@ -65,6 +65,17 @@ const ChooseUser = ({ visitor }) => {
   }
 
   useEffect(() => {
+    // Lock scroll when the component mounts
+    document.body.style.overflow = 'hidden';
+
+    // Unlock scroll when the component unmounts
+    return () => {
+        document.body.style.overflow = 'visible';
+    };
+}, []);
+
+
+  useEffect(() => {
     if (status === 'success' || currentUser !== null) {
       if (currentRole === 'Admin') {
         navigate('/Admin/dashboard');

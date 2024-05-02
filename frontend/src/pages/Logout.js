@@ -6,7 +6,6 @@ import styled from 'styled-components';
 
 const Logout = () => {
     const currentUser = useSelector(state => state.user.currentUser);
-
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -21,10 +20,14 @@ const Logout = () => {
 
     return (
         <LogoutContainer>
-            <h1>{currentUser.name}</h1>
-            <LogoutMessage>Are you sure you want to log out?</LogoutMessage>
-            <LogoutButtonLogout onClick={handleLogout}>Log Out</LogoutButtonLogout>
-            <LogoutButtonCancel onClick={handleCancel}>Cancel</LogoutButtonCancel>
+            <UserInfo>
+                <h2>Hello, {currentUser.name}</h2>
+                <p>Are you sure you want to log out?</p>
+            </UserInfo>
+            <ButtonContainer>
+                <Button onClick={handleLogout}>Log Out</Button>
+                <CancelButton onClick={handleCancel}>Cancel</CancelButton>
+            </ButtonContainer>
         </LogoutContainer>
     );
 };
@@ -32,42 +35,53 @@ const Logout = () => {
 export default Logout;
 
 const LogoutContainer = styled.div`
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
-  background-color: #85769f66;
-  color: black;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fff;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    max-width: 80%;
+    margin: 50px auto;
 `;
 
-const LogoutMessage = styled.p`
-  margin-bottom: 20px;
-  font-size: 16px;
-  text-align: center;
+const UserInfo = styled.div`
+    text-align: center;
+    margin-bottom: 20px;
 `;
 
-const LogoutButton = styled.button`
-  padding: 10px 20px;
-  margin-top: 10px;
-  border-radius: 5px;
-  font-size: 16px;
-  color: #fff;
-  cursor: pointer;
+const ButtonContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    width: 100%;
+`;
 
-  &:hover {
+const Button = styled.button`
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #ea0606;
     color: #fff;
-    background-color: #333;
-  }
+    border: none;
+    margin: 0 10px;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+        background-color: #d10000;
+    }
 `;
 
-const LogoutButtonLogout = styled(LogoutButton)`
-  background-color: #ea0606;
-`;
+const CancelButton = styled(Button)`
+    background-color: transparent;
+    color: #ea0606;
+    border: 1px solid #ea0606;
 
-const LogoutButtonCancel = styled(LogoutButton)`
-  background-color: rgb(99, 60, 99);
+    &:hover {
+        background-color: #fff;
+        color: #d10000;
+    }
 `;

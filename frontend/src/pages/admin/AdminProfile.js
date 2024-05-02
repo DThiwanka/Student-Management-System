@@ -5,8 +5,7 @@ import { deleteUser, updateUser } from '../../redux/userRelated/userHandle';
 import { useNavigate } from 'react-router-dom'
 import { authLogout } from '../../redux/userRelated/userSlice';
 import { Button, Collapse } from '@mui/material';
-
-// import { useSelector } from 'react-redux';
+import styled from 'styled-components';
 
 const AdminProfile = () => {
     const [showTab, setShowTab] = useState(false);
@@ -14,7 +13,6 @@ const AdminProfile = () => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch();
-        // const { currentUser } = useSelector((state) => state.user);
     const { currentUser, response, error } = useSelector((state) => state.user);
     const address = "Admin"
 
@@ -45,66 +43,70 @@ const AdminProfile = () => {
     }
 
     return (
-        <div >
-            <div style={styles.container}>
-             <strong>Name:</strong> {currentUser.name}
-            <br />
-             <strong>E mail:</strong> {currentUser.email}
-            <br />
-                <strong>School:</strong>: {currentUser.schoolName}
-            <br />
-            </div>
-            <Button variant="contained" color="error" style={styles.button} onClick={deleteHandler}>Delete</Button>
-            <Button variant="contained" style={styles.button} sx={styles.showButton}
-                onClick={() => setShowTab(!showTab)}>
-                {showTab ? <KeyboardArrowUp /> : <KeyboardArrowDown />}{buttonText}
-            </Button>
-            <Collapse style={styles.details} in={showTab} timeout="auto" unmountOnExit>
-                <div className="register">
-                    <form className="registerForm" onSubmit={submitHandler}>
-                        <span className="registerTitle">Edit Details</span>
-                        <label>Name</label>
-                        <input className="registerInput" type="text" placeholder="Enter your name..."
-                            value={name}
-                            onChange={(event) => setName(event.target.value)}
-                            autoComplete="name" required />
-
-                        <label>School</label>
-                        <input className="registerInput" type="text" placeholder="Enter your school name..."
-                            value={schoolName}
-                            onChange={(event) => setSchoolName(event.target.value)}
-                            autoComplete="name" required />
-
-                        <label>Email</label>
-                        <input className="registerInput" type="email" placeholder="Enter your email..."
-                            value={email}
-                            onChange={(event) => setEmail(event.target.value)}
-                            autoComplete="email" required />
-
-                        <label>Password</label>
-                        <input className="registerInput" type="password" placeholder="Enter your password..."
-                            value={password}
-                            onChange={(event) => setPassword(event.target.value)}
-                            autoComplete="new-password" />
-
-                        <button className="registerButton" type="submit" >Update</button>
-                    </form>
+        <CenteredContainer>
+            <ProfileContainer>
+                <div style={styles.container}>
+                    <strong style={styles.label}>Name:</strong> {currentUser.name}
+                    <br />
+                    <strong style={styles.label}>Email:</strong> {currentUser.email}
+                    <br />
+                    <strong style={styles.label}>School:</strong>: {currentUser.schoolName}
+                    <br />
                 </div>
-            </Collapse>
-        </div>
+                <Button variant="contained" color="error" style={styles.button} onClick={deleteHandler}>Delete</Button>
+                <Button variant="contained" style={styles.button} sx={styles.showButton}
+                    onClick={() => setShowTab(!showTab)}>
+                    {showTab ? <KeyboardArrowUp /> : <KeyboardArrowDown />}{buttonText}
+                </Button>
+                <Collapse style={styles.details} in={showTab} timeout="auto" unmountOnExit>
+                    <div className="register">
+                        <form className="registerForm" onSubmit={submitHandler}>
+                            <span className="registerTitle" style={styles.title}>Edit Details</span>
+                            <label style={styles.label}>Name</label>
+                            <input className="registerInput" type="text" placeholder="Enter your name..."
+                                value={name}
+                                onChange={(event) => setName(event.target.value)}
+                                autoComplete="name" required />
+
+                            <label style={styles.label}>School</label>
+                            <input className="registerInput" type="text" placeholder="Enter your school name..."
+                                value={schoolName}
+                                onChange={(event) => setSchoolName(event.target.value)}
+                                autoComplete="name" required />
+
+                            <label style={styles.label}>Email</label>
+                            <input className="registerInput" type="email" placeholder="Enter your email..."
+                                value={email}
+                                onChange={(event) => setEmail(event.target.value)}
+                                autoComplete="email" required />
+
+                            <label style={styles.label}>Password</label>
+                            <input className="registerInput" type="password" placeholder="Enter your password..."
+                                value={password}
+                                onChange={(event) => setPassword(event.target.value)}
+                                autoComplete="new-password" />
+
+                            <button className="registerButton" type="submit" style={styles.button}>Update</button>
+                        </form>
+                    </div>
+                </Collapse>
+            </ProfileContainer>
+        </CenteredContainer>
     )
 }
 
-export default AdminProfile
+export default AdminProfile;
 
-// const styles = {
-//     attendanceButton: {
-//         backgroundColor: "#270843",
-//         "&:hover": {
-//             backgroundColor: "#3f1068",
-//         }
-//     }
-// }
+const CenteredContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Adjust height as needed */
+`;
+
+const ProfileContainer = styled.div`
+    /* Add any additional styles if needed */
+`;
 
 const styles = {
     container: {
@@ -113,6 +115,7 @@ const styles = {
         padding: '20px',
         marginBottom: '20px',
         maxWidth: '400px',
+        fontSize: '25px', // Adjust font size as needed
     },
     button: {
         marginTop: '10px',
@@ -120,5 +123,16 @@ const styles = {
     },
     details: {
         marginTop: '10px',
+    },
+    label: {
+        fontSize: '25px', // Adjust font size as needed
+        fontWeight: 'bold',
+        marginRight: '5px',
+    },
+    title: {
+        fontSize: '25px', // Adjust font size as needed
+        fontWeight: 'bold',
+        marginBottom: '10px',
+        display: 'block',
     },
 };

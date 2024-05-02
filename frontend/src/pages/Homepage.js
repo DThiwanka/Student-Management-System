@@ -1,16 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Container, Grid, Box, Button } from '@mui/material';
+import { Container, Grid, Button } from '@mui/material';
 import styled from 'styled-components';
 import Students from "../assets/students.svg";
 import { LightPurpleButton } from '../components/buttonStyles';
 
 const Homepage = () => {
+    useEffect(() => {
+        // Lock scroll when the component mounts
+        document.body.style.overflow = 'hidden';
+
+        // Unlock scroll when the component unmounts
+        return () => {
+            document.body.style.overflow = 'visible';
+        };
+    }, []);
+
     return (
         <StyledContainer>
-            <Grid container spacing={0}>
+            <StyledGrid container spacing={0}>
                 <Grid item xs={12} md={6}>
-                    <img src={Students} alt="students" style={{ width: '100%' }} />
+                    <StyledImage src={Students} alt="students" />
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <StyledPaper elevation={3}>
@@ -24,29 +34,16 @@ const Homepage = () => {
                             Seamlessly track attendance, assess performance, and provide feedback.
                             Access records, view marks, and communicate effortlessly.
                         </StyledText>
-                        <StyledBox>
+                        <StyledButtonContainer>
                             <StyledLink to="/choose">
                                 <LightPurpleButton variant="contained" fullWidth>
                                     Login
                                 </LightPurpleButton>
                             </StyledLink>
-                            {/* <StyledLink to="/chooseasguest">
-                                <Button variant="outlined" fullWidth
-                                    sx={{ mt: 2, mb: 3, color: "#7f56da", borderColor: "#7f56da" }}
-                                >
-                                    Login as Guest
-                                </Button>
-                            </StyledLink> */}
-                            <StyledText>
-                                Don't have an account?{' '}
-                                <Link to="/Adminregister" style={{color:"#550080"}}>
-                                    Sign up
-                                </Link>
-                            </StyledText>
-                        </StyledBox>
+                        </StyledButtonContainer>
                     </StyledPaper>
                 </Grid>
-            </Grid>
+            </StyledGrid>
         </StyledContainer>
     );
 };
@@ -58,40 +55,41 @@ const StyledContainer = styled(Container)`
   justify-content: center;
   align-items: center;
   height: 100vh;
+  margin-top: 150px; /* Added margin-top */
+`;
+
+const StyledGrid = styled(Grid)`
+  margin: 0 !important;
 `;
 
 const StyledPaper = styled.div`
-  padding: 24px;
-  height: 100vh;
+  padding: 40px;
 `;
 
-const StyledBox = styled(Box)`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content:center;
-  gap: 16px;
-  padding: 24px;
+const StyledImage = styled.img`
+  width: 100%;
+  max-width: 400px;
 `;
 
 const StyledTitle = styled.h1`
-  font-size: 3rem;
+  font-size: 2.5rem;
   color: #252525;
-  /* font-family: "Manrope"; */
   font-weight: bold;
-  padding-top: 0;
-  letter-spacing: normal;
-  line-height: normal;
+  margin-bottom: 20px;
 `;
 
 const StyledText = styled.p`
-  /* color: #550080; */
-  margin-top: 30px;
-  margin-bottom: 30px; 
-  letter-spacing: normal;
-  line-height: normal;
+  color: #555;
+  margin-bottom: 20px;
+`;
+
+const StyledButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 `;
 
 const StyledLink = styled(Link)`
   text-decoration: none;
 `;
+
