@@ -72,31 +72,45 @@ const ShowStudents = () => {
     })
 
     const StudentButtonHaver = ({ row }) => {
-        const options = ['Take Attendance', 'Provide Marks','Add Payments'];
+        // const options = ['Take Attendance', 'Provide Marks','Add Payments'];
+        const options = ['Add Payments'];
 
         const [open, setOpen] = React.useState(false);
         const anchorRef = React.useRef(null);
         const [selectedIndex, setSelectedIndex] = React.useState(0);
 
+        // const handleClick = () => {
+        //     console.info(`You clicked ${options[selectedIndex]}`);
+        //     if (selectedIndex === 0) {
+        //         handleAttendance();
+        //     } else if (selectedIndex === 1) {
+        //         handleMarks();
+        //     }
+        //     else if (selectedIndex === 2) {
+        //         handlePayments();
+        //     }
+        // };
+
         const handleClick = () => {
             console.info(`You clicked ${options[selectedIndex]}`);
             if (selectedIndex === 0) {
-                handleAttendance();
-            } else if (selectedIndex === 1) {
-                handleMarks();
-            }
-            else if (selectedIndex === 2) {
+                // handleAttendance();
                 handlePayments();
-            }
+            // } else if (selectedIndex === 1) {
+            //     handleMarks();
+            // }
+            // else if (selectedIndex === 2) {
+            //     handlePayments();
+             }
         };
 
-        const handleAttendance = () => {
-            navigate("/Admin/students/student/attendance/" + row.id)
-        }
+        // const handleAttendance = () => {
+        //     navigate("/Admin/students/student/attendance/" + row.id)
+        // }
 
-        const handleMarks = () => {
-            navigate("/Admin/students/student/marks/" + row.id)
-        };
+        // const handleMarks = () => {
+        //     navigate("/Admin/students/student/marks/" + row.id)
+        // };
 
         const handlePayments = () => {
             navigate("/Admin/students/student/payment/" + row.id)

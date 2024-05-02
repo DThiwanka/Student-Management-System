@@ -501,8 +501,8 @@ const ViewStudent = () => {
                             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                                 <TabList onChange={handleChange} sx={{ position: 'fixed', width: '100%', bgcolor: 'background.paper', zIndex: 1 }}>
                                     <Tab label="Details" value="1" />
-                                    <Tab label="Attendance" value="2" />
-                                    <Tab label="Marks" value="3" />
+                                    {/* <Tab label="Attendance" value="2" />
+                                    <Tab label="Marks" value="3" /> */}
                                     <Tab label="Payment" value="4" />
                                 </TabList>
                             </Box>

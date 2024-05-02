@@ -63,7 +63,7 @@ const StudentHomePage = () => {
                             <Data start={0} end={500} duration={4} />
                         </StyledPaper>
                     </Grid> */}
-                    <Grid item xs={12} md={4} lg={3}>
+                    {/* <Grid item xs={12} md={4} lg={3}>
                         <ChartContainer>
                             {
                                 response ?
@@ -90,7 +90,7 @@ const StudentHomePage = () => {
                                     </>
                             }
                         </ChartContainer>
-                    </Grid>
+                    </Grid> */}
                     <Grid item xs={12}>
                         <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                             <SeeNotice />
