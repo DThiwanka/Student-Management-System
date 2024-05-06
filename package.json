@@ -1,0 +1,16 @@
+{
+  "name": "student-management-system",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "StartBackend" : "cd BACKEND && npm run start",
+    "StartFrontend": "cd frontend && npm run start",
+    "StartAll": "concurrently \"npm run StartBackend\" \"npm run StartFrontend\""
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
