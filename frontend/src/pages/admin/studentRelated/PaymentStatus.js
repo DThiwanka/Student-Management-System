@@ -61,18 +61,18 @@ const PaymentStatus = ({ situation }) => {
         );
         setSubjectName(selectedSubject.subName);
         setChosenSubName(selectedSubject._id);
-        console.log("changeHandler",selectedSubject);
+        console.log("changeHandler", selectedSubject);
     }
 
     // const fields = { subName: chosenSubName, status, date }
-    const fields = { subName: chosenSubName, subNameToString: subjectName , status, date, amount, month };
+    const fields = { subName: chosenSubName, subNameToString: subjectName, status, date, amount, month };
 
 
     const submitHandler = (event) => {
         event.preventDefault()
         setLoader(true)
         dispatch(updateStudentFields(studentID, fields, "PaymentStatus"))
-        console.log("submitHandler",fields);
+        console.log("submitHandler", fields);
     }
 
     useEffect(() => {
@@ -196,17 +196,30 @@ const PaymentStatus = ({ situation }) => {
                                         />
                                     </FormControl>
 
-                                    <FormControl>
-                                        <TextField
-                                            label="Select month"
-                                            type="text"
+                                    <FormControl fullWidth>
+                                        <InputLabel id="month-select-label">Select Month</InputLabel>
+                                        <Select
+                                            labelId="month-select-label"
+                                            id="month-select"
                                             value={month}
-                                            onChange={(event) => setMonth(event.target.value)} required
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                        />
+                                            onChange={(event) => setMonth(event.target.value)}
+                                            required
+                                        >
+                                            <MenuItem value="January">January</MenuItem>
+                                            <MenuItem value="February">February</MenuItem>
+                                            <MenuItem value="March">March</MenuItem>
+                                            <MenuItem value="April">April</MenuItem>
+                                            <MenuItem value="May">May</MenuItem>
+                                            <MenuItem value="June">June</MenuItem>
+                                            <MenuItem value="July">July</MenuItem>
+                                            <MenuItem value="August">August</MenuItem>
+                                            <MenuItem value="September">September</MenuItem>
+                                            <MenuItem value="October">October</MenuItem>
+                                            <MenuItem value="November">November</MenuItem>
+                                            <MenuItem value="December">December</MenuItem>
+                                        </Select>
                                     </FormControl>
+
                                 </Stack>
 
                                 <PurpleButton
@@ -220,10 +233,10 @@ const PaymentStatus = ({ situation }) => {
                                     {loader ? <CircularProgress size={24} color="inherit" /> : "Submit"}
                                 </PurpleButton>
                             </form>
+                        </Box>
                     </Box>
-                </Box>
-            <Popup message={message} setShowPopup={setShowPopup} showPopup={showPopup} />
-        </>
+                    <Popup message={message} setShowPopup={setShowPopup} showPopup={showPopup} />
+                </>
             }
         </>
     )

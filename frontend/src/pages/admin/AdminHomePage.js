@@ -1,4 +1,4 @@
-import { Container, Grid, Paper } from '@mui/material'
+import { Container, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import SeeNotice from '../../components/SeeNotice';
 import Students from "../../assets/img1.png";
 import Classes from "../../assets/img2.png";
@@ -31,6 +31,15 @@ const AdminHomePage = () => {
     const numberOfStudents = studentsList && studentsList.length;
     const numberOfClasses = sclassesList && sclassesList.length;
     const numberOfTeachers = teachersList && teachersList.length;
+
+    // Calculate the sum of payments
+    const totalPayments = studentsList.reduce((acc, student) => {
+        if (student.payment) {
+            const paymentsTotal = student.payment.reduce((sum, payment) => sum + payment.amount, 0);
+            return acc + paymentsTotal;
+        }
+        return acc;
+    }, 0);
 
     return (
         <>
@@ -69,7 +78,8 @@ const AdminHomePage = () => {
                             <Title>
                                 Fees Collection
                             </Title>
-                            <Data start={0} end={23000} duration={2.5} prefix="LKR." />
+                            {/* Display the total payments */}
+                            <Data start={0} end={totalPayments} duration={2.5} prefix="LKR." />
                         </StyledPaper>
                     </Grid>
                     <Grid item xs={12} md={12} lg={12}>
@@ -82,7 +92,6 @@ const AdminHomePage = () => {
         </>
     );
 };
-
 
 const StyledPaper = styled(Paper)`
   padding: 16px;
@@ -103,4 +112,4 @@ const Data = styled(CountUp)`
   color: green;
 `;
 
-export default AdminHomePage
+export default AdminHomePage;
