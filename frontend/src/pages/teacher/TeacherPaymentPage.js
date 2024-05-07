@@ -19,7 +19,7 @@ const TeacherPaymentPage = () => {
   useEffect(() => {
     const fetchPayments = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/teacherPayment/${id}/${subjectId}`);
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/teacherPayment/${id}/${subjectId}`);
         setPaymentsData(response.data);
         setLoading(false);
       } catch (error) {
