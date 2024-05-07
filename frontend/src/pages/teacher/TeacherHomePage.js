@@ -1,4 +1,4 @@
-import { Container, Grid, Paper } from '@mui/material'
+import { Container, Grid, Paper, Button } from '@mui/material'; // Import Button from '@mui/material'
 import SeeNotice from '../../components/SeeNotice';
 import CountUp from 'react-countup';
 import styled from 'styled-components';
@@ -9,9 +9,11 @@ import Time from "../../assets/time.svg";
 import { getClassStudents, getSubjectDetails } from '../../redux/sclassRelated/sclassHandle';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom'; // Import Link and useNavigate
 
 const TeacherHomePage = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate(); // Initialize useNavigate
 
     const { currentUser } = useSelector((state) => state.user);
     const { subjectDetails, sclassStudents } = useSelector((state) => state.sclass);
@@ -25,7 +27,13 @@ const TeacherHomePage = () => {
     }, [dispatch, subjectID, classID]);
 
     const numberOfStudents = sclassStudents && sclassStudents.length;
-    const numberOfSessions = subjectDetails && subjectDetails.sessions
+    const numberOfSessions = subjectDetails && subjectDetails.sessions;
+
+    const handleNavigation = () => {
+        // Navigate to the payment page with subjectID and currentUser._id
+        // navigate(`/teacher/payment/${}/${currentUser._id}`);
+        navigate(`/teacher/payment/${currentUser._id}/${subjectID}`);
+    }
 
     return (
         <>
@@ -64,7 +72,7 @@ const TeacherHomePage = () => {
                             <Title>
                                 Total Hours
                             </Title>
-                            <Data start={0} end={30} duration={4} suffix="hrs"/>                        </StyledPaper>
+                            <Data start={0} end={30} duration={4} suffix="hrs" />                        </StyledPaper>
                     </Grid>
                     <Grid item xs={12}>
                         <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
@@ -72,7 +80,12 @@ const TeacherHomePage = () => {
                         </Paper>
                     </Grid>
                 </Grid>
+                {/* Button to trigger navigation */}
+                <Button variant="contained" onClick={handleNavigation} sx={{ mt: 2 }}>
+                    Go to Payment Page
+                </Button>
             </Container>
+
         </>
     )
 }
@@ -96,4 +109,4 @@ const Data = styled(CountUp)`
   color: green;
 `;
 
-export default TeacherHomePage
+export default TeacherHomePage;

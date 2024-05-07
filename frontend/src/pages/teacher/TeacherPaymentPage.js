@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { Paper, Typography, CircularProgress, List, ListItem, ListItemText, Divider, Accordion, AccordionSummary, AccordionDetails, TextField, InputAdornment, IconButton } from '@mui/material';
+import { Paper, Typography, CircularProgress, List, ListItem, ListItemText, Divider, Accordion, AccordionSummary, AccordionDetails, TextField, InputAdornment, IconButton, Grid, Button } from '@mui/material';
 import { ExpandMore, CheckCircle, Cancel, Search, Clear, KeyboardArrowUp, KeyboardArrowDown } from '@mui/icons-material';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const TeacherPaymentPage = () => {
   const { id, subjectId } = useParams();
@@ -13,6 +14,7 @@ const TeacherPaymentPage = () => {
   const [sortOrder, setSortOrder] = useState('asc');
   const [currentPage, setCurrentPage] = useState(1);
   const [studentsPerPage] = useState(5);
+  const [monthlyIncome, setMonthlyIncome] = useState({});
 
   useEffect(() => {
     const fetchPayments = async () => {
@@ -29,6 +31,19 @@ const TeacherPaymentPage = () => {
 
     fetchPayments();
   }, [id, subjectId]);
+
+  useEffect(() => {
+    if (paymentsData) {
+      const income = {};
+      paymentsData.formattedStudents.forEach(student => {
+        student.payment.forEach(payment => {
+          const month = payment.month;
+          income[month] = (income[month] || 0) + payment.amount;
+        });
+      });
+      setMonthlyIncome(income);
+    }
+  }, [paymentsData]);
 
   const filteredStudents = paymentsData?.formattedStudents.filter(student =>
     student.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -63,6 +78,20 @@ const TeacherPaymentPage = () => {
       <Typography variant="h4" gutterBottom>
         Teacher Payment Page
       </Typography>
+      {paymentsData && (
+        <div style={{ marginTop: '20px' }}>
+          <Typography variant="h5" gutterBottom>Monthly Income (Bar Chart)</Typography>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={Object.keys(monthlyIncome).map(month => ({ month, income: monthlyIncome[month] }))}>
+              <XAxis dataKey="month" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="income" fill="#8884d8" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      )}
       <div style={{ marginBottom: '20px', display: 'flex', alignItems: 'center' }}>
         <div style={{ flex: 1 }}>
           <Typography variant="h5" gutterBottom>
@@ -102,7 +131,7 @@ const TeacherPaymentPage = () => {
           <List>
             {currentStudents.length > 0 ? (
               currentStudents.map((student, index) => (
-                <Accordion key={index} style={{ marginBottom: '10px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+                <Accordion key={index} style={{ marginBottom: '10px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', borderRadius: '8px' }}>
                   <AccordionSummary expandIcon={<ExpandMore />}>
                     <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
                       <Typography variant="subtitle1" style={{ flex: 1 }}>Student Name: {student.name}</Typography>
@@ -144,7 +173,7 @@ const TeacherPaymentPage = () => {
           {/* Pagination */}
           <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
             {Array.from({ length: Math.ceil(filteredStudents?.length / studentsPerPage) }, (_, i) => (
-              <button key={i} onClick={() => paginate(i + 1)} style={{ marginRight: '5px' }}>{i + 1}</button>
+              <Button key={i} onClick={() => paginate(i + 1)} style={{ marginRight: '5px', borderRadius: '999px', fontWeight: currentPage === i + 1 ? 'bold' : 'normal' }}>{i + 1}</Button>
             ))}
           </div>
         </div>
