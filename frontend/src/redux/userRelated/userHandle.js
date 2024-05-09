@@ -54,6 +54,8 @@ export const registerUser = (fields, role) => async (dispatch) => {
     }
 };
 
+
+
 export const logoutUser = () => (dispatch) => {
     dispatch(authLogout());
 };

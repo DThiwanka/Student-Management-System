@@ -1,20 +1,21 @@
-import { useEffect, useState } from 'react';
-import { IconButton, Box, Menu, MenuItem, ListItemIcon, Tooltip } from '@mui/material';
-import DeleteIcon from "@mui/icons-material/Delete";
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-//import { deleteUser } from '../../../redux/userRelated/userHandle';
+import { useNavigate } from "react-router-dom";
 import { getAllSclasses } from '../../../redux/sclassRelated/sclassHandle';
 import { BlueButton, GreenButton } from '../../../components/buttonStyles';
 import TableTemplate from '../../../components/TableTemplate';
-
+import SpeedDialTemplate from '../../../components/SpeedDialTemplate';
+import Popup from '../../../components/Popup';
+import DeleteIcon from "@mui/icons-material/Delete";
+import { IconButton, TextField, Box, Paper, Menu, MenuItem, ListItemIcon, InputAdornment } from '@mui/material';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import AddCardIcon from '@mui/icons-material/AddCard';
+// import { styled } from '@mui/system';
 import styled from 'styled-components';
-import SpeedDialTemplate from '../../../components/SpeedDialTemplate';
-import Popup from '../../../components/Popup';
+import SearchIcon from '@mui/icons-material/Search';
+
 
 const ShowClasses = () => {
   const navigate = useNavigate()
@@ -29,12 +30,13 @@ const ShowClasses = () => {
     dispatch(getAllSclasses(adminID, "Sclass"));
   }, [adminID, dispatch]);
 
+  const [showPopup, setShowPopup] = useState(false);
+  const [message, setMessage] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
+
   if (error) {
     console.log(error)
   }
-
-  const [showPopup, setShowPopup] = useState(false);
-  const [message, setMessage] = useState("");
 
   const deleteHandler = (deleteID, address) => {
     console.log(deleteID);
@@ -51,7 +53,12 @@ const ShowClasses = () => {
     { id: 'name', label: 'Class Name', minWidth: 170 },
   ]
 
-  const sclassRows = sclassesList && sclassesList.length > 0 && sclassesList.map((sclass) => {
+  // Filter classes based on search query
+  const filteredSclasses = sclassesList.filter(sclass =>
+    sclass.sclassName.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const sclassRows = filteredSclasses.map((sclass) => {
     return {
       name: sclass.sclassName,
       id: sclass._id,
@@ -91,19 +98,7 @@ const ShowClasses = () => {
     return (
       <>
         <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-          <Tooltip title="Add Students & Subjects">
-            <IconButton
-              onClick={handleClick}
-              size="small"
-              sx={{ ml: 2 }}
-              aria-controls={open ? 'account-menu' : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? 'true' : undefined}
-            >
-              <h5>Add</h5>
-              <SpeedDialIcon />
-            </IconButton>
-          </Tooltip>
+          <SpeedDialIcon onClick={handleClick} />
         </Box>
         <Menu
           anchorEl={anchorEl}
@@ -131,6 +126,10 @@ const ShowClasses = () => {
     );
   }
 
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
   const actions = [
     {
       icon: <AddCardIcon color="primary" />, name: 'Add New Class',
@@ -148,6 +147,26 @@ const ShowClasses = () => {
         <div>Loading...</div>
         :
         <>
+          <TextField
+            variant="standard"
+            value={searchQuery}
+            placeholder='Find By Class Name'
+            onChange={handleSearchChange}
+            sx={{
+              marginBottom: '16px',
+              marginTop: '30px',
+              width: '95%',
+              marginLeft: '20px',
+            }}
+            InputProps={{
+              startAdornment: (
+                  <InputAdornment position="start">
+                      <SearchIcon color="primary" />
+                  </InputAdornment>
+              ),
+          }}
+          
+          />
           {getresponse ?
             <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
               <GreenButton variant="contained" onClick={() => navigate("/Admin/addclass")}>
@@ -156,10 +175,12 @@ const ShowClasses = () => {
             </Box>
             :
             <>
-              {Array.isArray(sclassesList) && sclassesList.length > 0 &&
-                <TableTemplate buttonHaver={SclassButtonHaver} columns={sclassColumns} rows={sclassRows} />
-              }
-              <SpeedDialTemplate actions={actions} />
+              <Paper sx={{ width: '95%', overflow: 'hidden', marginLeft:'20px' }}>
+                {Array.isArray(sclassesList) && sclassesList.length > 0 &&
+                  <TableTemplate buttonHaver={SclassButtonHaver} columns={sclassColumns} rows={sclassRows} />
+                }
+                <SpeedDialTemplate actions={actions} />
+              </Paper>
             </>}
         </>
       }

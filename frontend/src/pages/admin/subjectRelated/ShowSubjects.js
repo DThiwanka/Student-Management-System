@@ -5,13 +5,14 @@ import { getSubjectList } from '../../../redux/sclassRelated/sclassHandle';
 import { deleteUser } from '../../../redux/userRelated/userHandle';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import {
-    Paper, Box, IconButton,
+    Paper, Box, IconButton, TextField, InputAdornment,
 } from '@mui/material';
 import DeleteIcon from "@mui/icons-material/Delete";
 import TableTemplate from '../../../components/TableTemplate';
 import { BlueButton, GreenButton } from '../../../components/buttonStyles';
 import SpeedDialTemplate from '../../../components/SpeedDialTemplate';
 import Popup from '../../../components/Popup';
+import SearchIcon from '@mui/icons-material/Search';
 
 const ShowSubjects = () => {
     const navigate = useNavigate()
@@ -23,12 +24,13 @@ const ShowSubjects = () => {
         dispatch(getSubjectList(currentUser._id, "AllSubjects"));
     }, [currentUser._id, dispatch]);
 
+    const [showPopup, setShowPopup] = useState(false);
+    const [message, setMessage] = useState("");
+    const [searchQuery, setSearchQuery] = useState('');
+
     if (error) {
         console.log(error);
     }
-
-    const [showPopup, setShowPopup] = useState(false);
-    const [message, setMessage] = useState("");
 
     const deleteHandler = (deleteID, address) => {
         console.log(deleteID);
@@ -43,12 +45,17 @@ const ShowSubjects = () => {
     }
 
     const subjectColumns = [
-        { id: 'subName', label: 'Sub Name', minWidth: 170 },
+        { id: 'subName', label: 'Subject Name', minWidth: 170 },
         { id: 'sessions', label: 'Sessions', minWidth: 170 },
         { id: 'sclassName', label: 'Class', minWidth: 170 },
     ]
 
-    const subjectRows = subjectsList.map((subject) => {
+    // Filter subjects based on search query
+    const filteredSubjects = subjectsList.filter(subject =>
+        subject.subName.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    const subjectRows = filteredSubjects.map((subject) => {
         return {
             subName: subject.subName,
             sessions: subject.sessions,
@@ -72,6 +79,10 @@ const ShowSubjects = () => {
         );
     };
 
+    const handleSearchChange = (event) => {
+        setSearchQuery(event.target.value);
+    };
+
     const actions = [
         {
             icon: <PostAddIcon color="primary" />, name: 'Add New Subject',
@@ -89,6 +100,26 @@ const ShowSubjects = () => {
                 <div>Loading...</div>
                 :
                 <>
+                    <TextField
+                       
+                        variant="standard"
+                        value={searchQuery}
+                        placeholder='Find By Subject Name'
+                        onChange={handleSearchChange}
+                        sx={{
+                            marginBottom: '16px',
+                            marginTop: '30px',
+                            width: '95%',
+                            marginLeft: '20px',
+                        }}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <SearchIcon color="primary" />
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
                     {response ?
                         <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
                             <GreenButton variant="contained"
@@ -97,7 +128,7 @@ const ShowSubjects = () => {
                             </GreenButton>
                         </Box>
                         :
-                        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+                        <Paper sx={{ width: '95%', overflow: 'hidden', marginLeft:'20px' }}>
                             {Array.isArray(subjectsList) && subjectsList.length > 0 &&
                                 <TableTemplate buttonHaver={SubjectsButtonHaver} columns={subjectColumns} rows={subjectRows} />
                             }

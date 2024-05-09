@@ -22,7 +22,8 @@ const {
     clearAllStudentsAttendance,
     removeStudentAttendanceBySubject,
     removeStudentAttendance, 
-    studentPayment} = require('../controllers/student_controller.js');
+    studentPayment,
+    checkRollNumber} = require('../controllers/student_controller.js');
 const { subjectCreate, classSubjects, deleteSubjectsByClass, getSubjectDetail, deleteSubject, freeSubjectList, allSubjects, deleteSubjects } = require('../controllers/subject-controller.js');
 const { teacherRegister, teacherLogIn, getTeachers, getTeacherDetail, deleteTeachers, deleteTeachersByClass, deleteTeacher, updateTeacherSubject, teacherAttendance, gettecherpayment } = require('../controllers/teacher-controller.js');
 
@@ -47,6 +48,7 @@ router.delete("/StudentsClass/:id", deleteStudentsByClass)
 router.delete("/Student/:id", deleteStudent)
 
 router.put("/Student/:id", updateStudent)
+router.post("/Student/checkRollNumber",checkRollNumber)
 
 router.put('/UpdateExamResult/:id', updateExamResult)
 

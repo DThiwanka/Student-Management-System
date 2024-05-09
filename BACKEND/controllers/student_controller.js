@@ -322,6 +322,23 @@ const studentPayment = async (req, res) => {
     }
 };
 
+const checkRollNumber = async (req, res) => {
+    try {
+        const { rollNum } = req.body;
+
+        // Check if the roll number already exists in the database
+        const existingStudent = await Student.findOne({ rollNum });
+
+        // If student with the same roll number exists, it's not available
+        const rollNumberAvailable = !existingStudent;
+
+        res.json({ available: rollNumberAvailable });
+    } catch (error) {
+        console.error('Error checking roll number availability:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
 
 module.exports = {
     studentRegister,
@@ -340,5 +357,6 @@ module.exports = {
     removeStudentAttendanceBySubject,
     removeStudentAttendance,
 
-    studentPayment
+    studentPayment,
+    checkRollNumber
 };
