@@ -38,10 +38,12 @@ const ShowStudents = () => {
             })
     }
 
+    console.log(currentUser)
+
     const studentColumns = [
         { id: 'name', label: 'Student Name', minWidth: 170 },
         { id: 'rollNum', label: 'Student ID Number', minWidth: 100 },
-        { id: 'sclassName', label: 'Class', minWidth: 170 },
+        { id: 'sclassName', label: 'Institute', minWidth: 170 },
     ]
 
     const StudentButtonHaver = ({ row }) => {
@@ -82,7 +84,7 @@ const ShowStudents = () => {
     ).map((student) => ({
         name: student.name,
         rollNum: student.rollNum,
-        sclassName: student.sclassName.name,
+        sclassName: student.sclassName.sclassName,
         id: student._id,
     }));
 

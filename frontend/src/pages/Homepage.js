@@ -6,46 +6,44 @@ import Students from "../assets/students.svg";
 import { LightPurpleButton } from '../components/buttonStyles';
 
 const Homepage = () => {
-    useEffect(() => {
-        // Lock scroll when the component mounts
-        document.body.style.overflow = 'hidden';
+  useEffect(() => {
+    // Lock scroll when the component mounts
+    document.body.style.overflow = 'hidden';
 
-        // Unlock scroll when the component unmounts
-        return () => {
-            document.body.style.overflow = 'visible';
-        };
-    }, []);
+    // Unlock scroll when the component unmounts
+    return () => {
+      document.body.style.overflow = 'visible';
+    };
+  }, []);
 
-    return (
-        <StyledContainer>
-            <StyledGrid container spacing={0}>
-                <Grid item xs={12} md={6}>
-                    <StyledImage src={Students} alt="students" />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                    <StyledPaper elevation={3}>
-                        <StyledTitle>
-                            Welcome to Lust Cap
-                            <br />
-                            Institute
-                        </StyledTitle>
-                        <StyledText>
-                            Streamline class management, class organization, and add students and faculty.
-                            Seamlessly track attendance, assess performance, and provide feedback.
-                            Access records, view marks, and communicate effortlessly.
-                        </StyledText>
-                        <StyledButtonContainer>
-                            <StyledLink to="/choose">
-                                <LightPurpleButton variant="contained" fullWidth>
-                                    Login
-                                </LightPurpleButton>
-                            </StyledLink>
-                        </StyledButtonContainer>
-                    </StyledPaper>
-                </Grid>
-            </StyledGrid>
-        </StyledContainer>
-    );
+  return (
+    <StyledContainer>
+      <StyledGrid container spacing={0}>
+        <Grid item xs={12} md={6}>
+          <StyledImage src={Students} alt="students" />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <StyledPaper elevation={3}>
+            <StyledTitle>
+              Welcome to Lust Cap
+              <br />
+              Institute
+            </StyledTitle>
+            <StyledText>
+              Welcome to Lustcap Institute, where we elevate class management to a whole new level. Our streamlined approach ensures seamless Institute organization while incorporating both students and Institute seamlessly. From tracking attendance to assessing performance, we've got you covered. Access records with ease, view marks effortlessly, and foster seamless communication throughout the institute.
+            </StyledText>
+            <StyledButtonContainer>
+              <StyledLink to="/choose">
+                <LightPurpleButton variant="contained" fullWidth>
+                  Login
+                </LightPurpleButton>
+              </StyledLink>
+            </StyledButtonContainer>
+          </StyledPaper>
+        </Grid>
+      </StyledGrid>
+    </StyledContainer>
+  );
 };
 
 export default Homepage;

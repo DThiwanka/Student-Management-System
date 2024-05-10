@@ -50,7 +50,7 @@ const ShowClasses = () => {
   }
 
   const sclassColumns = [
-    { id: 'name', label: 'Class Name', minWidth: 170 },
+    { id: 'name', label: 'Institute Name', minWidth: 170 },
   ]
 
   // Filter classes based on search query

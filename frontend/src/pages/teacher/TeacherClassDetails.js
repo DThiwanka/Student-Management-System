@@ -1,12 +1,13 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
 import { getClassStudents } from "../../redux/sclassRelated/sclassHandle";
-import { Paper, Box, Typography, ButtonGroup, Button, Popper, Grow, ClickAwayListener, MenuList, MenuItem } from '@mui/material';
-import { BlackButton, BlueButton} from "../../components/buttonStyles";
+import { Paper, Box, Typography, TextField, ButtonGroup, Button, Popper, Grow, MenuList, MenuItem, ClickAwayListener, InputAdornment } from '@mui/material';
+import { BlackButton, BlueButton } from "../../components/buttonStyles";
 import TableTemplate from "../../components/TableTemplate";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
+import SearchIcon from '@mui/icons-material/Search';
 
 const TeacherClassDetails = () => {
     const navigate = useNavigate()
@@ -21,16 +22,27 @@ const TeacherClassDetails = () => {
         dispatch(getClassStudents(classID));
     }, [dispatch, classID])
 
+    const [searchQuery, setSearchQuery] = useState("");
+
     if (error) {
         console.log(error)
     }
+
+    const handleSearchChange = (event) => {
+        setSearchQuery(event.target.value);
+    };
+
+    const filteredStudentRows = sclassStudents.filter(student =>
+        //student.rollNum.includes(searchQuery)
+        student.rollNum.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
     const studentColumns = [
         { id: 'name', label: 'Name', minWidth: 170 },
         { id: 'rollNum', label: 'NIC Number', minWidth: 100 },
     ]
 
-    const studentRows = sclassStudents.map((student) => {
+    const studentRows = filteredStudentRows.map((student) => {
         return {
             name: student.name,
             rollNum: student.rollNum,
@@ -143,15 +155,34 @@ const TeacherClassDetails = () => {
         );
     };
 
+
     return (
         <>
             {loading ? (
                 <div>Loading...</div>
             ) : (
                 <>
-                    <Typography variant="h4" align="center" gutterBottom>
-                        Class Details
+                    <Typography variant="h4" align="center" gutterBottom sx={{ marginBottom: '10px', marginTop: '20px', width: '100%' }}>
+                        Institute Details
                     </Typography>
+                    <Box sx={{ width: '100%', display: 'flex', margin: '16px 0' }}>
+                        <TextField
+                            placeholder="Search by Student ID"
+                            variant="outlined"
+                            value={searchQuery}
+                            onChange={handleSearchChange}
+                            sx={{ marginBottom: '10px', marginTop: '10px', width: '100%',marginLeft:'20px',marginRight:'20px' }}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <SearchIcon color="primary" />
+                                    </InputAdornment>
+                                ),
+                            }}
+                        />
+        
+                    
+                    </Box>
                     {getresponse ? (
                         <>
                             <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
@@ -159,12 +190,12 @@ const TeacherClassDetails = () => {
                             </Box>
                         </>
                     ) : (
-                        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-                            <Typography variant="h5" gutterBottom>
+                        <Paper sx={{ width: '98%', overflow: 'hidden', margin: '10px',marginRight:'10px' }}>
+                            {/* <Typography variant="h5">
                                 Students List:
-                            </Typography>
+                            </Typography> */}
 
-                            {Array.isArray(sclassStudents) && sclassStudents.length > 0 &&
+                            {Array.isArray(studentRows) && studentRows.length > 0 &&
                                 <TableTemplate buttonHaver={StudentsButtonHaver} columns={studentColumns} rows={studentRows} />
                             }
                         </Paper>
