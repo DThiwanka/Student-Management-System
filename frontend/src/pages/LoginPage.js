@@ -149,13 +149,13 @@ const LoginPage = ({ role }) => {
                                         required
                                         fullWidth
                                         id="rollNumber"
-                                        label="Enter your NIC Number"
+                                        label="Enter your Student ID Number"
                                         name="rollNumber"
                                         autoComplete="off"
                                         type="text"
                                         autoFocus
                                         error={rollNumberError}
-                                        helperText={rollNumberError && 'NIC Number is required'}
+                                        helperText={rollNumberError && 'Student ID Number is required'}
                                         onChange={handleInputChange}
                                     />
                                     <TextField

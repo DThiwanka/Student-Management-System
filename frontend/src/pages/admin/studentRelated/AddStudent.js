@@ -48,9 +48,9 @@ const AddStudent = ({ situation }) => {
     }, [adminID, dispatch]);
 
     const generateRollNum = () => {
-        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        const characters = '0123456789';
         const length = 5;
-        let result = 'STM-';
+        let result = 'LST-';
         for (let i = 0; i < length; i++) {
             result += characters.charAt(Math.floor(Math.random() * characters.length));
         }
