@@ -77,9 +77,9 @@ const AdminHomePage = () => {
             setAttendanceAnchorEl(null);
         };
 
-        const handleExamResultsPopoverOpen = (event) => {
-            setExamResultsAnchorEl(event.currentTarget);
-        };
+        // const handleExamResultsPopoverOpen = (event) => {
+        //     setExamResultsAnchorEl(event.currentTarget);
+        // };
 
         const handleExamResultsPopoverClose = () => {
             setExamResultsAnchorEl(null);
@@ -110,7 +110,7 @@ const AdminHomePage = () => {
                         </AttendancePopoverContent>
                     </Popover>
                 </TableCell>
-                <TableCell>
+                {/* <TableCell>
                     <Button startIcon={<ExamResultsIcon />} onClick={handleExamResultsPopoverOpen}>View</Button>
                     <Popover
                         open={Boolean(examResultsAnchorEl)}
@@ -121,7 +121,7 @@ const AdminHomePage = () => {
                             {renderExamResults(student.examResult)}
                         </ExamResultsPopoverContent>
                     </Popover>
-                </TableCell>
+                </TableCell> */}
                 <TableCell>
                     <Button startIcon={<PaymentsIcon />} onClick={handlePaymentsPopoverOpen}>View</Button>
                     <Popover
@@ -159,18 +159,18 @@ const AdminHomePage = () => {
         );
     };
 
-    const renderExamResults = (examResults) => {
-        return (
-            <div style={{ fontFamily: 'Arial, sans-serif', marginTop: '20px' }}>
-                {examResults.map((result, index) => (
-                    <div key={index} style={{ marginBottom: '10px', backgroundColor: index % 2 === 0 ? '#f2f2f2' : 'white', padding: '10px', borderRadius: '5px', boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)' }}>
-                        <div style={{ fontWeight: 'bold' }}>{result.subNameToString}</div>
-                        <div>Marks Obtained: {result.marksObtained}</div>
-                    </div>
-                ))}
-            </div>
-        );
-    };
+    // const renderExamResults = (examResults) => {
+    //     return (
+    //         <div style={{ fontFamily: 'Arial, sans-serif', marginTop: '20px' }}>
+    //             {examResults.map((result, index) => (
+    //                 <div key={index} style={{ marginBottom: '10px', backgroundColor: index % 2 === 0 ? '#f2f2f2' : 'white', padding: '10px', borderRadius: '5px', boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)' }}>
+    //                     <div style={{ fontWeight: 'bold' }}>{result.subNameToString}</div>
+    //                     <div>Marks Obtained: {result.marksObtained}</div>
+    //                 </div>
+    //             ))}
+    //         </div>
+    //     );
+    // };
 
 
     const renderPayments = (payments) => {
@@ -182,6 +182,7 @@ const AdminHomePage = () => {
                         <div>Status: {payment.status}</div>
                         <div>Amount: {payment.amount}</div>
                         <div>Month: {payment.month}</div>
+                        <div>Subject: {payment.subName}</div>
                     </div>
                 ))}
             </div>
@@ -260,7 +261,7 @@ const AdminHomePage = () => {
                                     <TableCell>Name</TableCell>
                                     <TableCell>Email</TableCell>
                                     <TableCell>Attendance</TableCell>
-                                    <TableCell>Exam Results</TableCell>
+                                    {/* <TableCell>Exam Results</TableCell> */}
                                     <TableCell>Payments</TableCell>
                                 </TableRow>
                             </TableHead>

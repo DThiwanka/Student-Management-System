@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { Paper, Typography, CircularProgress, List, ListItem, ListItemText, Divider, Accordion, AccordionSummary, AccordionDetails, TextField, InputAdornment, IconButton, Grid, Button } from '@mui/material';
+import { Paper, Typography, CircularProgress, List, ListItem, ListItemText, Divider, Accordion, AccordionSummary, AccordionDetails, TextField, InputAdornment, IconButton, Button } from '@mui/material';
 import { ExpandMore, CheckCircle, Cancel, Search, Clear, KeyboardArrowUp, KeyboardArrowDown } from '@mui/icons-material';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
@@ -19,8 +19,17 @@ const TeacherPaymentPage = () => {
   useEffect(() => {
     const fetchPayments = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/teacherPayment/${id}/${subjectId}`);
-        setPaymentsData(response.data);
+        const paymentsResponse = await axios.get(`${process.env.REACT_APP_BASE_URL}/teacherPayment/${id}/${subjectId}`);
+        const subjectResponse = await axios.get(`${process.env.REACT_APP_BASE_URL}/Subject/${subjectId}`);
+
+        const paymentsData = paymentsResponse.data;
+        const subjectName = subjectResponse.data.subName;
+
+        paymentsData.formattedStudents.forEach(student => {
+          student.subject = subjectName; // Add subject name to each student
+        });
+
+        setPaymentsData(paymentsData);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching payments:', error);
@@ -73,11 +82,23 @@ const TeacherPaymentPage = () => {
     setCurrentPage(1); // Reset to first page when clearing search
   };
 
+
+
   return (
     <Paper style={{ padding: '20px', marginTop: '20px' }}>
       <Typography variant="h4" gutterBottom>
         Teacher Payment Page
       </Typography>
+      {paymentsData && (
+        <div>
+          <Typography variant="h5" gutterBottom>
+            {/* Subject: {paymentsData.subjectName} */}
+          </Typography>
+          <Typography variant="h5" gutterBottom>
+            Total Income: {paymentsData.totalSum}
+          </Typography>
+        </div>
+      )}
       {paymentsData && (
         <div style={{ marginTop: '20px' }}>
           <Typography variant="h5" gutterBottom>Monthly Income (Bar Chart)</Typography>
@@ -95,8 +116,13 @@ const TeacherPaymentPage = () => {
       <div style={{ marginBottom: '20px', display: 'flex', alignItems: 'center' }}>
         <div style={{ flex: 1 }}>
           <Typography variant="h5" gutterBottom>
-            Total Income: {paymentsData?.totalSum}
+            {/* Total Income: {paymentsData?.totalSum} */}
           </Typography>
+          {paymentsData && (
+            <Typography variant="h5" gutterBottom>
+              {/* Subject: {paymentsData.subjectName} */}
+            </Typography>
+          )}
         </div>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Typography variant="body1" style={{ marginRight: '10px' }}>Sort by:</Typography>
@@ -134,8 +160,9 @@ const TeacherPaymentPage = () => {
                 <Accordion key={index} style={{ marginBottom: '10px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', borderRadius: '8px' }}>
                   <AccordionSummary expandIcon={<ExpandMore />}>
                     <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                      <Typography variant="subtitle1" style={{ flex: 1 }}>Student Name: {student.name}</Typography>
-                      <Typography variant="body1" style={{ marginRight: '20px' }}>Total Amount: {student.totalAmount}</Typography>
+                      <Typography variant="subtitle1" style={{ flex: 1 }}>Student Name: {student.name}</Typography> 
+                      <Typography variant="body1" style={{ marginRight: '10px' }}>Subject: {student.subject}</Typography>
+                      <Typography variant="body1">| Total Amount: {student.totalAmount}</Typography>
                     </div>
                   </AccordionSummary>
                   <AccordionDetails>
