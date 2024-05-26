@@ -182,7 +182,7 @@ const AdminHomePage = () => {
                         <div>Status: {payment.status}</div>
                         <div>Amount: {payment.amount}</div>
                         <div>Month: {payment.month}</div>
-                        <div>Subject: {payment.subName}</div>
+                        <div>Subject: {payment.subNameToString}</div>
                     </div>
                 ))}
             </div>
